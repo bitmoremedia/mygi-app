@@ -1,11 +1,19 @@
 # mygi-app
 MyGi Health App
 
-## Run the app
+## Install
 
 Ensure you have the React Native local environ dependencies installed (e.g. XCode and Android Studio - [link to getting started](https://facebook.github.io/react-native/docs/getting-started.html) )
 
-### iOS
+## Install Node Modules
+
+```
+$ yarn install
+or
+$ npm install
+```
+
+### Run on iOS
 
 No need to open XCode, just run:
 
@@ -13,7 +21,7 @@ No need to open XCode, just run:
 $ react-native run-ios
 ```
 
-### Android
+### Run on Android
 
 Open android virtual device manager
 
@@ -47,4 +55,14 @@ $ cd android && ./gradlew assembleRelease
 
 This will generate a release apk file that can be found at:
 
--- android > app > build > outputs > apk
+- android > app > build > outputs > apk
+
+
+### Beyond JS
+
+Below is a list of tasks that were required in the building of this app that went beyond just writing React JS code:
+
+| Task          | Description           | URL  |
+| ------------- | --------------------- | ---- |
+| Icons         | The app uses react-native-vector-icons which required some manual adjustments in order to add the Icon font files as assets to the respective iOS and Android ecosystems. Running `$ react-native link` seemed to do the trick however it added multiple icon files and as we are currently only using the Ionicon fonts, the unused fonts were then manually removed. | [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) |
+| App Icon | These was generated using a fantastic Yeoman based CLI tool which is a subset of  [generator-rn-toolbox](https://github.com/bamlab/generator-rn-toolbox) and requires 'imagemagick' to be installed locally in order to generate the icons with `$ yo rn-toolbox:assets --icon src/config/img/my-gi-icon.png` | [Generate Icons](https://github.com/bamlab/generator-rn-toolbox/blob/master/generators/assets/README.md) |
