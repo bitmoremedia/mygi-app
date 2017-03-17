@@ -37,7 +37,7 @@ $ react-native run-android
 
 ## Release
 
-See the [docs](https://facebook.github.io/react-native/docs/running-on-device.html#building-your-app-for-production) for how to release on iOS and Android.
+See the [docs](https://facebook.github.io/react-native/docs/running-on-device.html#building-your-app-for-production) for how to release on iOS and Android. (Note: you can cherry pick the last commit on the RELEASE_PROPERTIES branch to avoid needing to do this manually)
 
 ### iOS
 
@@ -45,7 +45,7 @@ For iOS it involves updating the 'Scheme' for the app in XCode from 'Develop' to
 
 ### Android
 
-For Android it involves using a signed SDK, see [these docs](https://facebook.github.io/react-native/docs/signed-apk-android.html)
+For Android it involves using a signed SDK, see [these docs](https://facebook.github.io/react-native/docs/signed-apk-android.html) (Note: the keystore passwords are not included in this repository)
 
 Once this set up is done, the following can be run to generate a standalone release build for Android
 
