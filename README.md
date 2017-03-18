@@ -1,6 +1,8 @@
 # mygi-app
 MyGi Health App
 
+![App Screens](/docs/MyGi-App-ScreenCast.gif?raw=true "App Screens")
+
 ## Install
 
 Ensure you have the React Native local environ dependencies installed (e.g. XCode and Android Studio - [link to getting started](https://facebook.github.io/react-native/docs/getting-started.html) )
