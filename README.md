@@ -5,7 +5,7 @@ MyGi Health App
 
 ## Install
 
-Ensure you have the React Native local environ dependencies installed (e.g. XCode and Android Studio - [link to getting started](https://facebook.github.io/react-native/docs/getting-started.html) )
+Ensure you have the React Native local environ dependencies installed (e.g. XCode and Android Studio - [see getting started](https://facebook.github.io/react-native/docs/getting-started.html) )
 
 ## Install Node Modules
 
