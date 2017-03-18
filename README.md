@@ -6,7 +6,7 @@ MyGi - health tracking App for iOS and Android built with React Native. Coming s
 ## Notable Dependencies
 
 | Module | Version         | Comment           | Resource Links  |
-| ------------- | --------------------- | ---- |
+| ------ | --------------- | ----------------- | --------------- |
 | react-native | 0.42.0 | React Native build for iOS and Android with an entirely shared code-base across the two platforms | [React Native](https://facebook.github.io/react-native/) |
 | react-navigation | 1.0.0.-beta.6  | It does the job quite well, and the API is a pleasure to work with - however the keen eye can still tell the navigation is JS based rather than native e.g. the header transitions can be juddery. I also had to put a hack in to stop 'double tap' of certain items adding the target nav screen to the stack twice | [React  Navigation](https://github.com/react-community/react-navigation) |
 | react-native-vector-icons | 4.0.0 | For the in app icons - currently utilises the Ionicons icon set - see Beyond JS section below for more info | [React Native Vector Icons](https://github.com/oblador/react-native-vector-icons) [Ionicons](http://ionicframework.com/docs/v2/ionicons/) |
