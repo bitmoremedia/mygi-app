@@ -65,8 +65,8 @@ export default class Favourites extends Component {
       rowIDs[sectionIndex].push(foodItem.name);
     });
 
-    this.setState({
-      dataSource: dataSource.cloneWithRowsAndSections(data, sections, rowIDs),
+    this.setState(() => {
+      return { dataSource: dataSource.cloneWithRowsAndSections(data, sections, rowIDs) };
     });
   }
 

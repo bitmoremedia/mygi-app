@@ -24,6 +24,60 @@ const buttonStyles = {
   marginRight: 6,
 };
 
+function newValueState({ newValue, adjustmentType }) {
+  return function (state) {
+    if (newValue) {
+      return { newValue };
+    }
+    if (adjustmentType && adjustmentType === 'increment') {
+      return {
+        newValue: state.newValue + 1,
+      };
+    }
+    if (adjustmentType && adjustmentType === 'decrement') {
+      return {
+        newValue: state.newValue - 1,
+      };
+    }
+    return state;
+  };
+}
+
+function deleteItemState({ item }) {
+  return function (state) {
+    const newState = Object.assign({}, state);
+    let indexToDelete = null;
+    newState.newFoodItems.forEach((existingItem, index) => {
+      if (existingItem.id === item.id) {
+        indexToDelete = index;
+      }
+    });
+    if (indexToDelete !== null) {
+      newState.newFoodItems.splice(indexToDelete, 1);
+      return newState;
+    }
+    return state;
+  };
+}
+
+function addItemState({ item }) {
+  return function (state) {
+    const newState = Object.assign({}, state);
+    // only add a food if it has not already been added to this meal
+    let newItem = true;
+    newState.newFoodItems.forEach((existingItem) => {
+      if (existingItem.id === item.id) {
+        newItem = false;
+      }
+    });
+    if (newItem) {
+      newState.newFoodItems.push(item);
+      return newState;
+    }
+    return state;
+  };
+}
+
 class Meal extends Component {
 
   constructor(props) {
@@ -64,9 +118,7 @@ class Meal extends Component {
   }
 
   onValueChange = (newValue) => {
-    this.setState({
-      newValue
-    });
+    this.setState(newValueState({ newValue }));
   }
 
   confirmChanges = () => {
@@ -109,48 +161,19 @@ class Meal extends Component {
   }
 
   deleteFoodItem = (item) => {
-    const newState = Object.assign({}, this.state);
-    let indexToDelete = null;
-    newState.newFoodItems.forEach((existingItem, index) => {
-      if (existingItem.id === item.id) {
-        indexToDelete = index;
-      }
-    });
-    if (indexToDelete !== null) {
-      newState.newFoodItems.splice(indexToDelete, 1);
-      this.setState(newState);
-    }
+    this.setState(deleteItemState({ item }));
   }
 
   addFoodItem = (item) => {
-    const newState = Object.assign({}, this.state);
-    // only add a food if it has not already been added to this meal
-    let newItem = true;
-    newState.newFoodItems.forEach((existingItem) => {
-      if (existingItem.id === item.id) {
-        newItem = false;
-      }
-    });
-    if (newItem) {
-      newState.newFoodItems.push(item);
-      this.setState(newState);
-    }
+    this.setState(addItemState({ item }));
   }
 
   goToAddFoodItem = () => {
     this.props.goToAddFoodItem(this.addFoodItem);
   }
 
-  fineAdjustment = (type) => {
-    if (type === 'increment') {
-      this.setState({
-        newValue: this.state.newValue + 1,
-      });
-    } else {
-      this.setState({
-        newValue: this.state.newValue - 1,
-      });
-    }
+  fineAdjustment = (adjustmentType) => {
+    this.setState(newValueState({ adjustmentType }));
   }
 
   render() {

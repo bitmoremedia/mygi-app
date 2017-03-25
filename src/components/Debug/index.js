@@ -4,6 +4,12 @@ import _ from 'lodash';
 
 import Button from '../common/Button';
 
+function incrementCounterState(state) {
+  return {
+    clickCount: state.clickCount + 1,
+  };
+}
+
 export default class MyGi extends Component {
 
   constructor(props) {
@@ -15,10 +21,7 @@ export default class MyGi extends Component {
   }
 
   incrementCounter = () => {
-    const newCount = this.state.clickCount + 1;
-    this.setState({
-      clickCount: newCount
-    });
+    this.setState(incrementCounterState);
   }
 
   button(mode) {

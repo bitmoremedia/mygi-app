@@ -18,6 +18,26 @@ import FoodItem from './FoodItem';
 // so some platform specific code has been added to manually call dismiss keyboard when
 // the keyboardDidHide event is triggered
 
+function clearTextState(state) {
+    return {
+      text: '',
+      dataSource: state.dataSource.cloneWithRows([]),
+    };
+}
+
+function filterTextState(filterText, itemsDatasource) {
+  return function (state) {
+    return {
+      text: filterText,
+      dataSource: state.dataSource.cloneWithRows(itemsDatasource),
+    };
+  };
+}
+
+function textInFocusState(newState) {
+  return { textInFocus: newState };
+}
+
 class FoodFinder extends Component {
 
   constructor(props) {
@@ -61,10 +81,7 @@ class FoodFinder extends Component {
   }
 
   clearText() {
-    this.setState({
-      text: '',
-      dataSource: this.state.dataSource.cloneWithRows([])
-    });
+    this.setState(clearTextState);
   }
 
   acceptText() {
@@ -80,22 +97,15 @@ class FoodFinder extends Component {
         return (foodItem.name.toUpperCase().indexOf(filterText.toUpperCase()) > -1);
       });
     }
-    this.setState({
-      text: filterText,
-      dataSource: this.state.dataSource.cloneWithRows(itemsDatasource)
-    });
+    this.setState(filterTextState(filterText, itemsDatasource));
   }
 
   filterTextFocus() {
-    this.setState({
-      textInFocus: true
-    });
+    this.setState(textInFocusState(true));
   }
 
   filterTextBlur() {
-    this.setState({
-      textInFocus: false
-    });
+    this.setState(textInFocusState(false));
   }
 
   searchInput() {

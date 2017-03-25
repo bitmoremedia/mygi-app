@@ -3,20 +3,26 @@ import { Provider } from 'react-redux';
 import configureStore from './configureStore';
 import App from './components/App';
 
+function loadingState(isLoading) {
+  return {
+    isLoading
+  };
+}
+
 class RootComponent extends Component {
   constructor() {
       super();
       this.state = {
-          isLoading: false,
-          store: configureStore(() => this.setState({ isLoading: false })),
+        isLoading: true,
+        store: configureStore(() => this.setState(loadingState(false))),
       };
   }
 
   render() {
       return (
-          <Provider store={this.state.store}>
-              <App />
-          </Provider>
+        <Provider store={this.state.store}>
+          <App />
+        </Provider>
       );
   }
 }

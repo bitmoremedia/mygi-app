@@ -17,6 +17,13 @@ import {
   SuccessWarnIconContainer,
 } from './styled-components';
 
+function sliderValueState({ slider, value }) {
+  return {
+    slider,
+    value,
+  };
+}
+
 class GiTargets extends Component {
 
   state = {
@@ -25,10 +32,7 @@ class GiTargets extends Component {
   };
 
   onValueChange = ({ type, value }) => {
-    this.setState({
-      slider: type,
-      value,
-    });
+    this.setState(sliderValueState({ slider: type, value }));
   }
 
   onSlidingComplete = ({ type, value }) => {
@@ -66,8 +70,8 @@ class GiTargets extends Component {
             minimumValue={0}
             maximumValue={21}
             step={1}
-            onSlidingComplete={(value) => this.onSlidingComplete({ type, value })}
-            onValueChange={(value) => this.onValueChange({ type, value })}
+            onSlidingComplete={(thisValue) => this.onSlidingComplete({ type, value: thisValue })}
+            onValueChange={(thisValue) => this.onValueChange({ type, value: thisValue })}
           />
         </SliderCol>
       </Row>

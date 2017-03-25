@@ -22,6 +22,72 @@ import {
 import { giType } from '../../config';
 import SuccessWarnIcon from '../common/SuccessWarnIcon';
 
+function dataSourceState(state) {
+  const getSectionHeaderData = (data, sectionName) => {
+    return data[sectionName];
+  };
+  const getRowData = (data, sectionName, rowID) => {
+    return data[rowID];
+  };
+
+  const dataSource = new ListView.DataSource({
+    getRowData,
+    getSectionHeaderData,
+    rowHasChanged: (row1, row2) => row1 !== row2,
+    sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+  });
+
+  const data = {};
+  const sections = [];
+  const rowIDs = [];
+
+  let monthsToShow = state.monthsToShow;
+  // limit how far back in time we go
+  if (monthsToShow + monthsToLoadAtATime < state.historyLimit) {
+    monthsToShow = state.monthsToShow + monthsToLoadAtATime;
+  }
+  if (monthsToShow < state.historyLimit) {
+    monthsToShow = state.historyLimit;
+  }
+
+  let sectionCount = 0;
+  let rowCount = 0;
+  let sectionId;
+  let rowId;
+  let sectionRows;
+  let weeksInMonth;
+
+  // add each month as a section
+  while (sectionCount < monthsToShow) {
+    sectionId = `SECTION-${sectionCount}`;
+    sections.push(sectionId);
+    data[sectionId] = sectionTitle(sectionCount);
+    rowIDs[sectionId] = [];
+    sectionRows = [];
+    // add the weeks of this month
+    weeksInMonth = getWeeksInMonth(sectionCount);
+    while (rowCount < weeksInMonth.length) {
+      rowId = `SECTION-${sectionCount}-ROW-${rowCount}`;
+      sectionRows.push(rowId);
+      data[rowId] = {
+        id: rowId,
+        start: weeksInMonth[rowCount],
+        rowCount,
+        weekNum: weeksInMonth.length - rowCount,
+      };
+      rowCount += 1;
+    }
+    rowIDs.push(sectionRows);
+    rowCount = 0;
+    sectionCount += 1;
+  }
+
+  return {
+    dataSource: dataSource.cloneWithRowsAndSections(data, sections, rowIDs),
+    monthsToShow,
+  };
+}
+
 const monthsToLoadAtATime = 10;
 
 const getWeeksInMonth = (sectionNum) => {
@@ -121,69 +187,7 @@ class TimeLine extends Component {
   }
 
   createDataSource = () => {
-    const getSectionHeaderData = (data, sectionName) => {
-      return data[sectionName];
-    };
-    const getRowData = (data, sectionName, rowID) => {
-      return data[rowID];
-    };
-
-    const dataSource = new ListView.DataSource({
-      getRowData,
-      getSectionHeaderData,
-      rowHasChanged: (row1, row2) => row1 !== row2,
-      sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-    });
-
-    const data = {};
-    const sections = [];
-    const rowIDs = [];
-
-    let monthsToShow = this.state.monthsToShow;
-    // limit how far back in time we go
-    if (monthsToShow + monthsToLoadAtATime < this.state.historyLimit) {
-      monthsToShow = this.state.monthsToShow + monthsToLoadAtATime;
-    }
-    if (monthsToShow < this.state.historyLimit) {
-      monthsToShow = this.state.historyLimit;
-    }
-
-    let sectionCount = 0;
-    let rowCount = 0;
-    let sectionId;
-    let rowId;
-    let sectionRows;
-    let weeksInMonth;
-
-    // add each month as a section
-    while (sectionCount < monthsToShow) {
-      sectionId = `SECTION-${sectionCount}`;
-      sections.push(sectionId);
-      data[sectionId] = sectionTitle(sectionCount);
-      rowIDs[sectionId] = [];
-      sectionRows = [];
-      // add the weeks of this month
-      weeksInMonth = getWeeksInMonth(sectionCount);
-      while (rowCount < weeksInMonth.length) {
-        rowId = `SECTION-${sectionCount}-ROW-${rowCount}`;
-        sectionRows.push(rowId);
-        data[rowId] = {
-          id: rowId,
-          start: weeksInMonth[rowCount],
-          rowCount,
-          weekNum: weeksInMonth.length - rowCount,
-        };
-        rowCount += 1;
-      }
-      rowIDs.push(sectionRows);
-      rowCount = 0;
-      sectionCount += 1;
-    }
-
-    this.setState({
-      dataSource: dataSource.cloneWithRowsAndSections(data, sections, rowIDs),
-      monthsToShow,
-    });
+    this.setState(dataSourceState);
   }
 
   renderRow = ({ id, start, weekNum }) => {
